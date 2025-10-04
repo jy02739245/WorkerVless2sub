@@ -56,7 +56,7 @@ async function 整理优选列表(api) {
 
 	const timeout = setTimeout(() => {
 		controller.abort(); // 取消所有请求
-	}, 2000); // 2秒后触发
+	}, 6000); // 2秒后触发
 
 	try {
 		// 使用Promise.allSettled等待所有API请求完成，无论成功或失败
@@ -951,6 +951,7 @@ export default {
 		let uuid = "";
 		let path = "";
 		let sni = "";
+		let allowInsecure = 0
 		let type = "ws";
 		alpn = env.ALPN || alpn;
 		let UD = Math.floor(((timestamp - Date.now()) / timestamp * 99 * 1099511627776) / 2);
@@ -1058,6 +1059,7 @@ export default {
 
 			await sendMessage(`#获取订阅 ${FileName}`, request.headers.get('CF-Connecting-IP'), `UA: ${userAgentHeader}</tg-spoiler>\n域名: ${url.hostname}\n<tg-spoiler>入口: ${url.pathname + url.search}</tg-spoiler>`);
 		} else {
+			allowInsecure = url.searchParams.get('allowInsecure') || 0;
 			host = url.searchParams.get('host');
 			uuid = url.searchParams.get('uuid') || url.searchParams.get('password') || url.searchParams.get('pw');
 			path = url.searchParams.get('path');
@@ -1377,13 +1379,13 @@ export default {
 				}
 
 				if (协议类型 == 'VMess') {
-					const vmessLink = `vmess://${utf8ToBase64(`{"v":"2","ps":"${addressid + 节点备注}","add":"${address}","port":"${port}","id":"${uuid}","aid":"${额外ID}","scy":"${加密方式}","net":"ws","type":"${type}","host":"${伪装域名}","path":"${最终路径}","tls":"tls","sni":"${sni}","alpn":"${encodeURIComponent(alpn)}","fp":"","allowInsecure":"1","fragment":"1,40-60,30-50,tlshello"}`)}`;
+					const vmessLink = `vmess://${utf8ToBase64(`{"v":"2","ps":"${addressid + 节点备注}","add":"${address}","port":"${port}","id":"${uuid}","aid":"${额外ID}","scy":"${加密方式}","net":"ws","type":"${type}","host":"${伪装域名}","path":"${最终路径}","tls":"tls","sni":"${sni}","alpn":"${encodeURIComponent(alpn)}","fp":"","allowInsecure":${allowInsecure},"fragment":"1,40-60,30-50,tlshello"}`)}`;
 					return vmessLink;
 				} else if (协议类型 == atob('VHJvamFu')) {
-					const 特洛伊Link = `${atob(atob('ZEhKdmFtRnVPaTh2')) + uuid}@${address}:${port}?security=tls&sni=${sni}&alpn=${encodeURIComponent(alpn)}&fp=randomized&type=${type}&host=${伪装域名}&path=${encodeURIComponent(最终路径)}&allowInsecure=1&fragment=${encodeURIComponent('1,40-60,30-50,tlshello')}#${encodeURIComponent(addressid + 节点备注)}`;
+					const 特洛伊Link = `${atob(atob('ZEhKdmFtRnVPaTh2')) + uuid}@${address}:${port}?security=tls&sni=${sni}&alpn=${encodeURIComponent(alpn)}&fp=randomized&type=${type}&host=${伪装域名}&path=${encodeURIComponent(最终路径)}&allowInsecure=${allowInsecure}&fragment=${encodeURIComponent('1,40-60,30-50,tlshello')}#${encodeURIComponent(addressid + 节点备注)}`;
 					return 特洛伊Link;
 				} else {
-					const 为烈士Link = `${atob(atob('ZG14bGMzTTZMeTg9')) + uuid}@${address}:${port}?security=tls&sni=${sni}&alpn=${encodeURIComponent(alpn)}&fp=random&type=${type}&host=${伪装域名}&path=${encodeURIComponent(最终路径) + xhttp}&allowInsecure=1&fragment=${encodeURIComponent('1,40-60,30-50,tlshello')}&encryption=none#${encodeURIComponent(addressid + 节点备注)}`;
+					const 为烈士Link = `${atob(atob('ZG14bGMzTTZMeTg9')) + uuid}@${address}:${port}?security=tls&sni=${sni}&alpn=${encodeURIComponent(alpn)}&fp=random&type=${type}&host=${伪装域名}&path=${encodeURIComponent(最终路径) + xhttp}&allowInsecure=${allowInsecure}&fragment=${encodeURIComponent('1,40-60,30-50,tlshello')}&encryption=none#${encodeURIComponent(addressid + 节点备注)}`;
 					return 为烈士Link;
 				}
 
@@ -1461,3 +1463,4 @@ export default {
 		}
 	}
 };
+
